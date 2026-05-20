@@ -57,7 +57,7 @@ export const projects: Project[] = [
       "/screens/upi/upi_3.png",
       "/screens/upi/upi_4.jpeg",
       "/screens/upi/upi_6.jpeg",
-      "/screens/upi/upi_5.jpeg",
+      "/screens/upi/upi_5.png",
     ],
     features: [
       "Real-time transaction scoring",
