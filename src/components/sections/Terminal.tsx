@@ -31,11 +31,12 @@ export default function Terminal() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
 
   const processCommand = (cmd: string) => {
@@ -147,7 +148,7 @@ export default function Terminal() {
               <span className="ml-2 text-xs text-zinc-500">parth@command-center:~</span>
             </div>
 
-            <div className="h-80 overflow-y-auto p-4 md:h-96">
+            <div ref={scrollRef} className="h-80 overflow-y-auto p-4 md:h-96">
               {lines.map((line, i) => (
                 <motion.div
                   key={`${line.text}-${i}`}
@@ -166,7 +167,6 @@ export default function Terminal() {
                   {line.text}
                 </motion.div>
               ))}
-              <div ref={bottomRef} />
             </div>
 
             <div className="flex items-center gap-2 border-t border-cyan-500/20 bg-black/60 px-4 py-3">

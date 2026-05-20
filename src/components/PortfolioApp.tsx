@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BootScreen from "@/components/effects/BootScreen";
 import Particles from "@/components/effects/Particles";
 import GridOverlay from "@/components/effects/GridOverlay";
@@ -20,9 +20,22 @@ import Contact from "@/components/sections/Contact";
 export default function PortfolioApp() {
   const [booted, setBooted] = useState(false);
 
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleBootComplete = () => {
+    setBooted(true);
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+  };
+
   return (
     <>
-      {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      {!booted && <BootScreen onComplete={handleBootComplete} />}
       <SmoothScroll>
         <div className={`relative min-h-screen bg-[#050508] text-white ${!booted ? "overflow-hidden" : ""}`}>
           <Particles />
