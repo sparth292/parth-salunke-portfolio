@@ -7,7 +7,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import SkillLogo from "@/components/ui/SkillLogo";
 
 const COUNT = skills.length;
-const RADIUS = 200;
+const RADIUS = 240;
 
 function polarToCartesian(index: number, total: number, radius: number) {
   const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
@@ -41,8 +41,8 @@ export default function SkillsWheel() {
 
   return (
     <section id="skills" className="relative overflow-hidden px-6 py-32">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/10" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-fuchsia-500/5" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/10" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-fuchsia-500/5" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <SectionHeader
@@ -53,7 +53,7 @@ export default function SkillsWheel() {
 
         <div
           className="relative mx-auto flex items-center justify-center"
-          style={{ minHeight: 540 }}
+          style={{ minHeight: 580 }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >

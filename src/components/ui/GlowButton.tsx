@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 interface GlowButtonProps {
   children: React.ReactNode;
   href?: string;
+  download?: string;
   onClick?: () => void;
   type?: "button" | "submit";
   variant?: "primary" | "secondary" | "ghost";
@@ -16,6 +17,7 @@ interface GlowButtonProps {
 export default function GlowButton({
   children,
   href,
+  download,
   onClick,
   type = "button",
   variant = "primary",
@@ -40,9 +42,34 @@ export default function GlowButton({
 
   if (href) {
     const isExternal = href.startsWith("http");
+    if (download) {
+      return (
+        <a href={href} download={download} className="inline-block">
+          {content}
+        </a>
+      );
+    }
     if (isExternal) {
       return (
         <a href={href} target="_blank" rel="noopener noreferrer" className="inline-block">
+          {content}
+        </a>
+      );
+    }
+    if (href.startsWith("#") || href.startsWith("/")) {
+      const isPageRoute =
+        !href.startsWith("#") &&
+        !href.includes(".") &&
+        !href.startsWith("/resume/");
+      if (isPageRoute) {
+        return (
+          <Link href={href} className="inline-block">
+            {content}
+          </Link>
+        );
+      }
+      return (
+        <a href={href} className="inline-block">
           {content}
         </a>
       );
