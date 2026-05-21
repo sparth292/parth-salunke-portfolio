@@ -20,12 +20,16 @@ function LandingPinFrame({
   pin,
   layout,
   onClick,
+  compact = false,
 }: {
   pin: PinterestPin;
   layout: (typeof PREVIEW_LAYOUT)[0];
   onClick: () => void;
+  compact?: boolean;
 }) {
   const isCenter = layout.z === 10;
+  const frameW = compact ? 168 : isCenter ? 220 : 180;
+  const frameH = compact ? 300 : isCenter ? 392 : 320;
 
   return (
     <motion.button
@@ -65,8 +69,8 @@ function LandingPinFrame({
               : "border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
           }`}
           style={{
-            width: isCenter ? 220 : 180,
-            height: isCenter ? 392 : 320,
+            width: frameW,
+            height: frameH,
           }}
         >
           <Image
@@ -74,7 +78,7 @@ function LandingPinFrame({
             alt={pin.title}
             fill
             className="object-cover"
-            sizes={isCenter ? "220px" : "180px"}
+            sizes={`${frameW}px`}
             unoptimized
             priority={isCenter}
           />
@@ -137,7 +141,7 @@ export default function PinterestGallery() {
   const otherPins = pins.filter((p) => p.aspect === "square");
 
   return (
-    <section id="wallpapers" className="relative overflow-hidden px-6 py-20 md:py-28">
+    <section id="wallpapers" className="relative overflow-hidden px-4 py-16 sm:px-6 sm:py-20 md:py-28">
       {/* Ambient backdrop for landing trio */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="h-[500px] w-[800px] rounded-full bg-cyan-500/5 blur-[120px]" />
@@ -154,14 +158,29 @@ export default function PinterestGallery() {
           <span className="font-mono text-xs tracking-[0.4em] text-cyan-500/80 uppercase">
             // Visual Archive
           </span>
-          <h2 className="mt-3 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-3xl font-bold tracking-tight text-transparent md:text-4xl">
+          <h2 className="mt-3 max-w-full px-2 text-2xl font-bold tracking-tight break-words bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-transparent sm:text-3xl md:text-4xl">
             {boardTitle}
           </h2>
         </motion.div>
 
-        {/* Landing — exactly 3 pins, cinematic fan layout */}
-        <div className="relative mx-auto flex min-h-[420px] max-w-4xl items-end justify-center gap-0 md:gap-2">
-          {/* Floor line */}
+        {/* Mobile — single pin + view all */}
+        <div className="relative mx-auto flex min-h-0 max-w-full flex-col items-center md:hidden">
+          <div className="relative flex w-full max-w-[200px] justify-center pb-4">
+            <div className="absolute bottom-2 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+            <LandingPinFrame
+              pin={featured[1] ?? featured[0]}
+              layout={{ rotate: 0, y: 0, scale: 1, z: 10 }}
+              onClick={() => setLightbox(featured[1] ?? featured[0])}
+              compact
+            />
+          </div>
+          <GlowButton variant="secondary" onClick={() => setExpanded(true)}>
+            View All Wallpapers
+          </GlowButton>
+        </div>
+
+        {/* Desktop — 3 pins, cinematic fan layout */}
+        <div className="relative mx-auto hidden min-h-[420px] max-w-4xl items-end justify-center gap-0 md:flex md:gap-2">
           <div className="absolute bottom-6 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
 
           {featured.map((pin, i) => (
@@ -175,7 +194,7 @@ export default function PinterestGallery() {
         </div>
 
         <motion.p
-          className="mt-10 text-center font-mono text-xs text-zinc-500"
+          className="mt-8 text-center font-mono text-xs text-zinc-500 md:mt-10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -184,7 +203,7 @@ export default function PinterestGallery() {
           {totalOnPinterest ? ` / ${totalOnPinterest}` : ""} pins
         </motion.p>
 
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 hidden justify-center md:flex">
           <GlowButton variant="secondary" onClick={() => setExpanded(true)}>
             View All Wallpapers
           </GlowButton>

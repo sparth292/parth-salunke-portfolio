@@ -39,8 +39,6 @@ export default function SkillsWheel() {
     return () => clearInterval(id);
   }, [paused]);
 
-  const activeIndex = skills.findIndex((s) => s.name === active.name);
-
   return (
     <section id="skills" className="relative overflow-hidden px-6 py-32">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-500/10" />
@@ -55,7 +53,7 @@ export default function SkillsWheel() {
 
         <div
           className="relative mx-auto flex items-center justify-center"
-          style={{ minHeight: 520 }}
+          style={{ minHeight: 540 }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
@@ -120,7 +118,7 @@ export default function SkillsWheel() {
           </motion.div>
 
           {/* Center hub — fixed, does not rotate */}
-          <div className="relative z-20 flex h-64 w-64 flex-col items-center justify-center rounded-full border border-cyan-500/30 bg-[#0a0a12]/95 p-6 text-center backdrop-blur-xl shadow-[0_0_80px_rgba(0,240,255,0.1)] md:h-72 md:w-72">
+          <div className="relative z-20 flex h-72 w-72 flex-col items-center justify-center rounded-full border border-cyan-500/30 bg-[#0a0a12]/95 p-7 text-center backdrop-blur-xl shadow-[0_0_80px_rgba(0,240,255,0.1)] md:h-80 md:w-80">
             <div
               className="pointer-events-none absolute inset-3 rounded-full opacity-40"
               style={{
@@ -137,37 +135,23 @@ export default function SkillsWheel() {
                 className="relative z-10 flex flex-col items-center px-2"
               >
                 <div
-                  className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
+                  className="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-2xl border border-white/10 bg-white/5"
                   style={{ boxShadow: `0 0 24px ${active.color}33` }}
                 >
-                  <SkillLogo skill={active} size={40} priority />
+                  <SkillLogo skill={active} size={44} priority />
                 </div>
-                <h3 className="mt-3 text-xl font-bold text-white">{active.name}</h3>
+                <h3 className="mt-3 text-xl font-bold text-white md:text-2xl">{active.name}</h3>
                 <span
                   className="mt-1 block font-mono text-[10px] tracking-widest uppercase"
                   style={{ color: active.color }}
                 >
                   {active.category}
                 </span>
-                <p className="mt-4 text-xs leading-relaxed text-zinc-400 md:text-sm">
+                <p className="mt-3 max-w-[11rem] text-[10px] leading-snug text-zinc-400 md:max-w-[12.5rem] md:text-[11px]">
                   {active.description}
                 </p>
               </motion.div>
             </AnimatePresence>
-
-            <div className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
-              {skills.map((s, i) => (
-                <button
-                  key={s.name}
-                  type="button"
-                  onClick={() => setActive(s)}
-                  className={`h-1 rounded-full transition-all ${
-                    i === activeIndex ? "w-4 bg-cyan-400" : "w-1 bg-zinc-600 hover:bg-zinc-400"
-                  }`}
-                  aria-label={s.name}
-                />
-              ))}
-            </div>
           </div>
         </div>
 
