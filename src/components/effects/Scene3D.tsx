@@ -6,27 +6,54 @@ import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import * as THREE from "three";
 
 function CoreOrb() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const outerRef = useRef<THREE.Mesh>(null);
+  const innerRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.15;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
+    const t = state.clock.elapsedTime;
+    if (outerRef.current) {
+      outerRef.current.rotation.x = t * 0.12;
+      outerRef.current.rotation.y = t * 0.18;
+    }
+    if (innerRef.current) {
+      innerRef.current.rotation.x = -t * 0.08;
+      innerRef.current.rotation.z = t * 0.1;
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.4} floatIntensity={1.2}>
-      <Sphere ref={meshRef} args={[1.8, 64, 64]} scale={1.2}>
+    <Float speed={1.8} rotationIntensity={0.35} floatIntensity={1}>
+      {/* Outer shell — lighter blue */}
+      <Sphere ref={outerRef} args={[1.85, 64, 64]} scale={1.25}>
         <MeshDistortMaterial
-          color="#00f0ff"
-          attach="material"
-          distort={0.35}
-          speed={2}
-          roughness={0.2}
-          metalness={0.8}
-          emissive="#7b2fff"
-          emissiveIntensity={0.3}
+          color="#2563eb"
+          distort={0.4}
+          speed={1.8}
+          roughness={0.15}
+          metalness={0.85}
+          emissive="#3b82f6"
+          emissiveIntensity={0.25}
+        />
+      </Sphere>
+
+      {/* Inner core — deep navy (gradient feel) */}
+      <Sphere ref={innerRef} args={[1.15, 48, 48]} scale={0.95}>
+        <meshStandardMaterial
+          color="#0f172a"
+          emissive="#1e3a8a"
+          emissiveIntensity={0.55}
+          roughness={0.4}
+          metalness={0.6}
+        />
+      </Sphere>
+
+      {/* Soft glow halo */}
+      <Sphere args={[2.4, 32, 32]}>
+        <meshBasicMaterial
+          color="#1d4ed8"
+          transparent
+          opacity={0.12}
+          side={THREE.BackSide}
         />
       </Sphere>
     </Float>
@@ -34,34 +61,36 @@ function CoreOrb() {
 }
 
 function ParticleField() {
-  const count = 400;
+  const count = 300;
   const ref = useRef<THREE.Points>(null);
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      pos[i * 3] = (Math.random() - 0.5) * 18;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 18;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 18;
     }
     return pos;
   }, []);
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.02;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.015;
     }
   });
 
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.03} color="#00f0ff" transparent opacity={0.6} />
+      <pointsMaterial
+        size={0.025}
+        color="#3b82f6"
+        transparent
+        opacity={0.35}
+      />
     </points>
   );
 }
@@ -69,9 +98,10 @@ function ParticleField() {
 function Scene() {
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={1} color="#00f0ff" />
-      <pointLight position={[-10, -5, 5]} intensity={0.6} color="#ff00aa" />
+      <ambientLight intensity={0.2} color="#0f172a" />
+      <pointLight position={[8, 6, 8]} intensity={1.2} color="#60a5fa" />
+      <pointLight position={[-6, -4, 4]} intensity={0.6} color="#1e40af" />
+      <pointLight position={[0, 0, -5]} intensity={0.4} color="#172554" />
       <CoreOrb />
       <ParticleField />
     </>
@@ -80,7 +110,7 @@ function Scene() {
 
 export default function Scene3D() {
   return (
-    <div className="absolute inset-0 z-0 opacity-70">
+    <div className="absolute inset-0 z-0 opacity-80">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 50 }}
         dpr={[1, 1.5]}
