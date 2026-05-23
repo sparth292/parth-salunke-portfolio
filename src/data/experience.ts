@@ -9,30 +9,30 @@ export interface ExperienceItem {
 
 export const experience: ExperienceItem[] = [
   {
-    id: "spit",
-    role: "Junior Network Engineer",
-    org: "SPIT",
-    period: "2024 — Present",
+    id: "freelance",
+    role: "Freelance Developer",
+    org: "Independent Projects",
+    period: "Sep 2025 — Dec 2025",
     description:
-      "Maintained campus network infrastructure, configured routing protocols, and supported secure connectivity for academic systems.",
-    tags: ["Networking", "Cisco", "Security"],
+      "Delivered mobile apps, web dashboards, and automation tools for clients across fintech, education, and community sectors.",
+    tags: ["Flutter", "Full-Stack", "Client Work"],
   },
   {
     id: "gssoc",
     role: "Open Source Contributor",
     org: "GirlScript Summer of Code",
-    period: "2023 — 2024",
+    period: "Aug 2025 — Nov 2025",
     description:
       "Contributed to open-source repositories, resolved issues, and collaborated with global developers on production-grade codebases.",
     tags: ["Open Source", "Git", "Collaboration"],
   },
   {
-    id: "freelance",
-    role: "Freelance Developer",
-    org: "Independent Projects",
-    period: "2022 — Present",
+    id: "spit",
+    role: "Junior Network Engineer",
+    org: "SPIT",
+    period: "Jun 2025 — Oct 2025",
     description:
-      "Delivered mobile apps, web dashboards, and automation tools for clients across fintech, education, and community sectors.",
-    tags: ["Flutter", "Full-Stack", "Client Work"],
+      "Maintained campus network infrastructure, configured routing protocols, and supported secure connectivity for academic systems.",
+    tags: ["Networking", "Cisco", "Security"],
   },
 ];
